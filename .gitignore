@@ -1,0 +1,26 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/MReminders/DesignTimeBuild
+/.vs/MReminders/FileContentIndex
+/.vs/MReminders/v17
+/.vs/MReminders/v17/ResourceExplorer/settings.json
+/.vs/ProjectEvaluation
+/.vs
+/bin/Debug
+/obj
+/src/back-end/MReminders.API.Application/bin/Debug/net9.0
+/src/back-end/MReminders.API.Application/obj
+/src/back-end/MReminders.API.Domain/bin/Debug/net9.0
+/src/back-end/MReminders.API.Domain/obj
+/src/back-end/MReminders.API.Infrastructure/bin/Debug/net9.0
+/src/back-end/MReminders.API.Infrastructure/obj
+/src/back-end/MReminders.API.Server/bin/Debug/net9.0
+/src/back-end/MReminders.API.Server/obj
+/src/front-end/MReminders.Mobile.Application/obj
+/src/front-end/MReminders.Mobile.Client/obj
+/src/front-end/MReminders.Mobile.Domain/obj
+/src/front-end/MReminders.Mobile.Infrastructure/obj
+/src/front-end/MReminders.Rest.Client/bin/Debug/net8.0
+/src/front-end/MReminders.Rest.Client/obj
