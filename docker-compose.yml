@@ -1,0 +1,21 @@
+services:
+  
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    hostname: sqlserver
+
+  mreminders.api.server:
+    image: ${DOCKER_REGISTRY-}mremindersapiserver
+    build:
+      context: .
+      dockerfile: src/back-end/MReminders.API.Server/Dockerfile
+    hostname: mreminders.api
+    restart: on-failure
+
+networks:
+  app-network:
+    driver: bridge
+    external: true
+volumes:
+  sqlserverdata:

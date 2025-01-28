@@ -1,0 +1,32 @@
+services:
+  sqlserver:
+    environment:
+      SA_PASSWORD: 1qazZAQ!2#
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - app-network
+    volumes:
+      - sqlserverdata:/var/opt/mssql 
+      - ./src/scripts:/usr/config
+
+  mreminders.api.server:
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MRemindersDB;User Id=sa;Password=1qazZAQ!2#;TrustServerCertificate=true;MultipleActiveResultSets=true;
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    dns:
+      - 8.8.8.8  
+      - 8.8.4.4
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro 
+    networks:
+      - app-network
