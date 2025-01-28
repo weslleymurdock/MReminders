@@ -1,0 +1,6 @@
+@MReminders.API.Server_HostAddress = http://localhost:5142
+
+GET {{MReminders.API.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
