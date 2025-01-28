@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <OpenApiReference Include="swagger.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.2.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <Target Name="GenerateOpenApiClient" BeforeTargets="Build">
+    <Exec Command="nswag openapi2csclient /input:swagger.json /output:MRemindersClient.cs /namespace:RemoteTickets.Rest.Client /classname:MRemindersClient /exceptionClass:MRemindersClientException /wrapDtoExceptions:true /useBaseUrl:true /generateBaseUrlProperty:true /generateSyncMethods:false /clientClassAccessModifier:public /typeAccessModifier:public /requiredPropertiesMustBeDefined:true /dateType:System.DateTime /dateTimeType:System.DateTime /timeType:System.TimeSpan /arrayType:System.Collections.Generic.ICollection /arrayInstanceType:System.Collections.ObjectModel.Collection /dictionaryType:System.Collections.Generic.IDictionary /dictionaryInstanceType:System.Collections.Generic.Dictionary /classStyle:Poco /operationGenerationMode:SingleClientFromOperationId /useRequestAndResponseSerializationSettings:false /generateOptionalParameters:true" />
+  </Target>
+
+</Project>
