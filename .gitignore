@@ -24,3 +24,9 @@
 /src/front-end/MReminders.Mobile.Infrastructure/obj
 /src/front-end/MReminders.Rest.Client/bin/Debug/net8.0
 /src/front-end/MReminders.Rest.Client/obj
+/tests/back-end/MReminders.Tests.E2ETests/bin
+/tests/back-end/MReminders.Tests.E2ETests/obj
+/tests/back-end/MReminders.Tests.IntegrationTests/bin
+/tests/back-end/MReminders.Tests.IntegrationTests/obj
+/tests/back-end/MReminders.Tests.UnitTests/bin
+/tests/back-end/MReminders.Tests.UnitTests/obj
