@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
@@ -23,21 +23,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="AutoMapper.Collection" Version="10.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
 		<PackageReference Include="MediatR" Version="12.4.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-	</ItemGroup>
+  </ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Mappings\" />
-	  <Folder Include="Validators\" />
 	  <Folder Include="Responses\" />
-	  <Folder Include="Requests\" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\MReminders.Mobile.Domain\MReminders.Mobile.Domain.csproj" />
+	  <ProjectReference Include="..\MReminders.Mobile.Infrastructure\MReminders.Mobile.Infrastructure.csproj" />
 	  <ProjectReference Include="..\MReminders.Rest.Client\MReminders.Rest.Client.csproj" />
 	</ItemGroup>
 
