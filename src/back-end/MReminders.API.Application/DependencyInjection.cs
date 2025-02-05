@@ -14,6 +14,7 @@ namespace MReminders.API.Application
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddValidatorsFromAssemblyContaining<AccountLoginRequestValidator>();
+            
             services.AddInfrastructure(configuration);
             return services;
         }

@@ -73,6 +73,7 @@ public class LoginAccountRequestHandler(IValidator<LoginAccountRequest> validato
                     Phone = phone,
                     Token = token,
                     Roles = roles,
+                    Id = userId,
                     ExpirationDate = tokenDescriptor.Expires.Value
                 },
                 Message = "Login successful",

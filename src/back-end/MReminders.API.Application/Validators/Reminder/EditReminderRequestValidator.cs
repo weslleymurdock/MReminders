@@ -15,7 +15,7 @@ public class EditReminderRequestValidator : AbstractValidator<EditReminderReques
         RuleFor(x => x).NotNull().NotEmpty().WithMessage("The request object must not be null or empty");
         RuleFor(x => x.Id).NotNull().NotEmpty().WithMessage("The Id must informed");
         RuleFor(x => x.Id).Must(BelongToValidReminder).WithMessage("The Id must belong to a valid existent reminder");
-        RuleFor(x => x).Must(request => BeUniqueReminderName(request.Name, request.UserId)).WithMessage("The reminder name should not be repeated");
+        RuleFor(x => x).Must(request => BeUniqueReminderName(request.Name, request.UserId, request.Id)).WithMessage("The reminder name should not be repeated");
         RuleFor(x => x.UserId).NotNull().NotEmpty().WithMessage("The UserId must be informed");
         RuleFor(x => x.UserId).MustAsync(BelongToAValidUser).WithMessage("The UserId must be a valid guid string");
         RuleFor(x => x.Name).NotNull().NotEmpty().WithMessage("The name must not be null or empty");
@@ -29,5 +29,7 @@ public class EditReminderRequestValidator : AbstractValidator<EditReminderReques
 
     private bool BelongToValidReminder(string id) => service.GetReminders().Any(x => x.Id == id);
 
-    private bool BeUniqueReminderName(string name, string userId) => !service.GetReminders().Any(x => x.Name == name && x.UserId == userId);
+    private bool BeUniqueReminderName(string name, string userId, string reminderId) => !service.GetRemindersFromUser(userId).Any(x => x.Name == name && x.Id != reminderId);
+        
+    
 }

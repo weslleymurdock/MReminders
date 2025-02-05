@@ -35,7 +35,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ModifiedDate, opt => opt.Ignore());
 
         CreateMap<EditReminderRequest, Reminder>()
-            .ForMember(dest => dest.UserId, opt => opt.Ignore())
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
             .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
