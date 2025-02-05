@@ -1,10 +1,10 @@
-﻿namespace RemoteTickets.Rest.Client;
+﻿namespace MReminders.Rest.Client;
 
 public partial class MRemindersClient
 {
     public string BearerToken { get; set; }
     public string BasicToken { get; set; }
-    partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url)
+    partial void PrepareRequest(HttpClient client, HttpRequestMessage request, string url)
     {
         if (url.Contains("api/Account/Register"))
         {

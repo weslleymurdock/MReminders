@@ -6,7 +6,7 @@ services:
     ports:
       - "1433:1433"
     networks:
-      - app-network
+      - mreminders-network
     volumes:
       - sqlserverdata:/var/opt/mssql 
       - ./src/scripts:/usr/config
@@ -21,12 +21,9 @@ services:
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MRemindersDB;User Id=sa;Password=1qazZAQ!2#;TrustServerCertificate=true;MultipleActiveResultSets=true;
     ports:
       - "8080:8080"
-      - "8081:8081"
-    dns:
-      - 8.8.8.8  
-      - 8.8.4.4
+      - "8081:8081" 
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro 
     networks:
-      - app-network
+      - mreminders-network

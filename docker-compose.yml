@@ -4,6 +4,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
     hostname: sqlserver
+    restart: on-failure
 
   mreminders.api.server:
     image: ${DOCKER_REGISTRY-}mremindersapiserver
@@ -14,8 +15,8 @@ services:
     restart: on-failure
 
 networks:
-  app-network:
-    driver: bridge
-    external: true
+  mreminders-network:
+    driver: bridge 
+
 volumes:
   sqlserverdata:

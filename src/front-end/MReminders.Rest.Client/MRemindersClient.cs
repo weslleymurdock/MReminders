@@ -18,7 +18,7 @@
 #pragma warning disable 8625 // Disable "CS8625 Cannot convert null literal to non-nullable reference type"
 #pragma warning disable 8765 // Disable "CS8765 Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes)."
 
-namespace RemoteTickets.Rest.Client
+namespace MReminders.Rest.Client
 {
     using System = global::System;
 
@@ -177,10 +177,10 @@ namespace RemoteTickets.Rest.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Endpoint para realizar requisições de Login (autenticação). Utiliza o metodo de autenticação Basic
+        /// Endpoint para realizar requisi��es de Login (autentica��o). Utiliza o metodo de autentica��o Basic
         /// </summary>
         /// <remarks>
-        /// Este endpoint realiza login utilizando autenticação Basic. 
+        /// Este endpoint realiza login utilizando autentica��o Basic. 
         /// <br/>            
         /// <br/>Exemplo de chamada:
         /// <br/>            
@@ -191,7 +191,7 @@ namespace RemoteTickets.Rest.Client
         /// <br/>Content-Type: application/json
         /// <br/>```
         /// <br/>
-        /// <br/>O endpoint retorna um objeto `BaseResponse{LoginResponse}` contendo o token de autenticação ou mensagens de erro apropriadas.
+        /// <br/>O endpoint retorna um objeto `BaseResponse{LoginResponse}` contendo o token de autentica��o ou mensagens de erro apropriadas.
         /// </remarks>
         /// <returns>OK</returns>
         /// <exception cref="MRemindersClientException">A server side error occurred.</exception>
@@ -296,10 +296,10 @@ namespace RemoteTickets.Rest.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Endpoint para cadastro de um usuario na base de dados. Não requer autenticação.
+        /// Endpoint para cadastro de um usuario na base de dados. N�o requer autentica��o.
         /// </summary>
         /// <remarks>
-        /// Este endpoint permite registrar uma nova conta de usuário.
+        /// Este endpoint permite registrar uma nova conta de usu�rio.
         /// <br/>            
         /// <br/>Exemplo de chamada:
         /// <br/>            
@@ -319,10 +319,10 @@ namespace RemoteTickets.Rest.Client
         /// <br/>}
         /// <br/>```
         /// <br/>
-        /// <br/>O endpoint retorna um objeto `BaseResponse{UserResponse}` contendo os dados do usuário recém-criado ou mensagens de erro apropriadas.
+        /// <br/>O endpoint retorna um objeto `BaseResponse{UserResponse}` contendo os dados do usu�rio rec�m-criado ou mensagens de erro apropriadas.
         /// </remarks>
         /// <param name="body">Objeto do tipo MReminders.API.Application.Requests.Account.RegisterAccountRequest com os dados do usuario a ser cadastrado</param>
-        /// <returns>Conta do usuário criada com sucesso.</returns>
+        /// <returns>Conta do usu�rio criada com sucesso.</returns>
         /// <exception cref="MRemindersClientException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<UserResponseBaseResponse> RegisterAsync(RegisterAccountRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
@@ -384,7 +384,7 @@ namespace RemoteTickets.Rest.Client
                             {
                                 throw new MRemindersClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new MRemindersClientException<UserResponseBaseResponse>("Algum erro na requisi\u00e7\u00e3o ou valida\u00e7\u00e3o dos dados.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MRemindersClientException<UserResponseBaseResponse>("Algum erro na requisi\ufffd\ufffdo ou valida\ufffd\ufffdo dos dados.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 409)
@@ -394,7 +394,7 @@ namespace RemoteTickets.Rest.Client
                             {
                                 throw new MRemindersClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new MRemindersClientException<UserResponseBaseResponse>("Conflito - o email ou nome de usu\u00e1rio j\u00e1 est\u00e1 em uso.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MRemindersClientException<UserResponseBaseResponse>("Conflito - o email ou nome de usu\ufffdrio j\ufffd est\ufffd em uso.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 422)
@@ -404,7 +404,7 @@ namespace RemoteTickets.Rest.Client
                             {
                                 throw new MRemindersClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new MRemindersClientException<UserResponseBaseResponse>("Dados fornecidos n\u00e3o s\u00e3o pass\u00edveis de processamento.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MRemindersClientException<UserResponseBaseResponse>("Dados fornecidos n\ufffdo s\ufffdo pass\ufffdveis de processamento.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -431,7 +431,7 @@ namespace RemoteTickets.Rest.Client
         /// Edita os dados do usuario selecionado
         /// </summary>
         /// <remarks>
-        /// Este endpoint permite editar os dados de um usuário existente.
+        /// Este endpoint permite editar os dados de um usu�rio existente.
         /// <br/>            
         /// <br/>Exemplo de chamada:
         /// <br/>            
@@ -451,10 +451,10 @@ namespace RemoteTickets.Rest.Client
         /// <br/>}
         /// <br/>```
         /// <br/>
-        /// <br/>O endpoint retorna um objeto `BaseResponse{bool}` que indica o resultado da operação.
+        /// <br/>O endpoint retorna um objeto `BaseResponse{bool}` que indica o resultado da opera��o.
         /// </remarks>
         /// <param name="body">Objeto do tipo MReminders.API.Application.Requests.Account.EditAccountProfileRequest com os dados do usuario para atualizar</param>
-        /// <returns>Os dados do usuário foram atualizados com sucesso.</returns>
+        /// <returns>Os dados do usu�rio foram atualizados com sucesso.</returns>
         /// <exception cref="MRemindersClientException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<BooleanBaseResponse> UpdateProfileAsync(EditAccountProfileRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
@@ -516,7 +516,7 @@ namespace RemoteTickets.Rest.Client
                             {
                                 throw new MRemindersClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new MRemindersClientException<BooleanBaseResponse>("Algum erro na requisi\u00e7\u00e3o ou valida\u00e7\u00e3o dos dados.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MRemindersClientException<BooleanBaseResponse>("Algum erro na requisi\ufffd\ufffdo ou valida\ufffd\ufffdo dos dados.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 401)
@@ -526,7 +526,7 @@ namespace RemoteTickets.Rest.Client
                             {
                                 throw new MRemindersClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new MRemindersClientException<BooleanBaseResponse>("Acesso n\u00e3o autorizado.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MRemindersClientException<BooleanBaseResponse>("Acesso n\ufffdo autorizado.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
@@ -536,7 +536,7 @@ namespace RemoteTickets.Rest.Client
                             {
                                 throw new MRemindersClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new MRemindersClientException<BooleanBaseResponse>("Usu\u00e1rio n\u00e3o encontrado.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MRemindersClientException<BooleanBaseResponse>("Usu\ufffdrio n\ufffdo encontrado.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -563,7 +563,7 @@ namespace RemoteTickets.Rest.Client
         /// Exclui os dados do usuario selecionado
         /// </summary>
         /// <remarks>
-        /// Este endpoint permite excluir os dados de um usuário existente.
+        /// Este endpoint permite excluir os dados de um usu�rio existente.
         /// <br/>            
         /// <br/>Exemplo de chamada:
         /// <br/>            
@@ -578,10 +578,10 @@ namespace RemoteTickets.Rest.Client
         /// <br/>}
         /// <br/>```
         /// <br/>
-        /// <br/>O endpoint retorna um objeto `BaseResponse{bool}` que indica o resultado da operação.
+        /// <br/>O endpoint retorna um objeto `BaseResponse{bool}` que indica o resultado da opera��o.
         /// </remarks>
         /// <param name="body">Objeto do tipo MReminders.API.Application.Requests.Account.EditAccountProfileRequest com os dados do usuario para atualizar</param>
-        /// <returns>Os dados do usuário foram excluidos com sucesso.</returns>
+        /// <returns>Os dados do usu�rio foram excluidos com sucesso.</returns>
         /// <exception cref="MRemindersClientException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<BooleanBaseResponse> DeleteUserAsync(DeleteAccountRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
@@ -643,7 +643,7 @@ namespace RemoteTickets.Rest.Client
                             {
                                 throw new MRemindersClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new MRemindersClientException<BooleanBaseResponse>("Algum erro na requisi\u00e7\u00e3o ou valida\u00e7\u00e3o dos dados.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MRemindersClientException<BooleanBaseResponse>("Algum erro na requisi\ufffd\ufffdo ou valida\ufffd\ufffdo dos dados.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 401)
@@ -653,7 +653,7 @@ namespace RemoteTickets.Rest.Client
                             {
                                 throw new MRemindersClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new MRemindersClientException<BooleanBaseResponse>("Acesso n\u00e3o autorizado.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MRemindersClientException<BooleanBaseResponse>("Acesso n\ufffdo autorizado.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
@@ -663,7 +663,7 @@ namespace RemoteTickets.Rest.Client
                             {
                                 throw new MRemindersClientException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new MRemindersClientException<BooleanBaseResponse>("Usu\u00e1rio n\u00e3o encontrado.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new MRemindersClientException<BooleanBaseResponse>("Usu\ufffdrio n\ufffdo encontrado.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -1360,9 +1360,9 @@ namespace RemoteTickets.Rest.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Adiciona um lembrete para um usuário
+        /// Adiciona um lembrete para um usu�rio
         /// </summary>
-        /// <param name="body">Objeto do tipo MReminders.API.Application.Requests.Reminders.AddReminderRequest que vem no body da requisição</param>
+        /// <param name="body">Objeto do tipo MReminders.API.Application.Requests.Reminders.AddReminderRequest que vem no body da requisi��o</param>
         /// <returns>Created</returns>
         /// <exception cref="MRemindersClientException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ReminderResponseBaseResponse> AddReminderAsync(AddReminderRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
@@ -1592,9 +1592,9 @@ namespace RemoteTickets.Rest.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Busca por lembretes de um usuário a partir de uma palavra-chave (Username, Email, Telefone)
+        /// Busca por lembretes de um usu�rio a partir de uma palavra-chave (Username, Email, Telefone)
         /// </summary>
-        /// <param name="key">Chave de busca: Username ou email ou número de telefone</param>
+        /// <param name="key">Chave de busca: Username ou email ou n�mero de telefone</param>
         /// <returns>OK</returns>
         /// <exception cref="MRemindersClientException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ReminderResponseIEnumerableBaseResponse> GetRemindersAsync(string key, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
@@ -2134,6 +2134,9 @@ namespace RemoteTickets.Rest.Client
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class LoginResponse
     {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+
         [Newtonsoft.Json.JsonProperty("fullName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FullName { get; set; }
 
