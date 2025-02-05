@@ -3,25 +3,46 @@
     "http": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_RUNNING_IN_CONTAINER": "false",
+        "ASPNETCORE_HTTP_PORTS": "8080",
+        "ASPNETCORE_HTTPS_PORTS": "8081"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5142"
+      "applicationUrl": "http://localhost:8080"
     },
     "https": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_RUNNING_IN_CONTAINER": "false",
+        "ASPNETCORE_HTTPS_PORTS": "8081",
+        "ASPNETCORE_HTTP_PORTS": "8080"
+
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7269;http://localhost:5142"
+      "applicationUrl": "https://localhost:8081;http://localhost:8080"
+    },
+    "LocalNetwork": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORTS": "8081",
+        "ASPNETCORE_HTTP_PORTS": "8080",
+        "DOTNET_RUNNING_IN_CONTAINER": "false"
+      },
+      "publishAllPorts": true,
+      "useSSL": true,
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://192.168.15.15:8081;http://192.168.15.15:8080"
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "environmentVariables": {
         "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080"
+        "ASPNETCORE_HTTP_PORTS": "8080",
+        "DOTNET_RUNNING_IN_CONTAINER": "true"
       },
       "publishAllPorts": true,
       "useSSL": true

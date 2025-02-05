@@ -6,6 +6,12 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using MReminders.API.Domain.Identity;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 
 namespace MReminders.API.Server;
 /// <summary>
@@ -49,6 +55,32 @@ public static class DependencyInjection
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddSelfSignedCertificate(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddHttpsRedirection(options =>
+        {
+            options.HttpsPort = options.GetHttpsPort();
+        });
+
+        // Carregar o certificado com chave privada
+        var certificate =
+        services.Configure<KestrelServerOptions>(options =>
+        {
+            options.ConfigureHttpsDefaults(httpsOptions =>
+            {
+                httpsOptions.ServerCertificate = httpsOptions.LoadCertificate(configuration.GetRequiredSection("Kestrel:Endpoints:Https:Certificate:Path").Value!, configuration.GetRequiredSection("Kestrel:Endpoints:Https:Certificate:KeyPath").Value!, configuration.GetRequiredSection("Certificate:Passphrase").Value!);
+                ;
+            });
+        });
+        return services;
+    }
+
+    /// <summary>
     /// Metodo para executar migrações no banco de dados
     /// </summary>
     /// <typeparam name="TContext">Tipo do contexto do banco de dados a ser migrado</typeparam>
@@ -68,5 +100,55 @@ public static class DependencyInjection
             var logger = services.GetRequiredService<ILogger<TContext>>();
             logger.LogError(ex, "An error occurred while migrating the database.");
         }
+    }
+
+
+    /// <summary>
+    /// Adiciona o certificado presente no caminho informado e a chave privada presente no caminho informado, e importa os arquivos com a senha informada
+    /// </summary>
+    /// <param name="_">Extende o metodoo para as opções presentes em <see cref="HttpsConnectionAdapterOptions"/>.</param>
+    /// <param name="certPath">caminho do certificado auto assinado (.pem)</param>
+    /// <param name="keyPath">caminho da chave privada (.key)</param>
+    /// <param name="password">senha da chave privada</param>
+    /// <returns></returns>
+    public static X509Certificate2 LoadCertificate(this HttpsConnectionAdapterOptions _, string certPath, string keyPath, string password)
+    {
+        // Leia o conteúdo dos arquivos PEM
+        string certPem = File.ReadAllText(certPath);
+        string keyPem = File.ReadAllText(keyPath);
+
+        // Extraia o certificado do PEM
+        var certBytes = GetPemBytes(certPem, "CERTIFICATE");
+        var certificate = new X509Certificate2(certBytes);
+
+        // Extraia a chave privada do PEM
+        var rsa = RSA.Create();
+        rsa.ImportFromEncryptedPem(keyPem, password);
+
+        // Combine a chave privada com o certificado
+        var certWithKey = certificate.CopyWithPrivateKey(rsa);
+
+        return certWithKey;
+    }
+    private static byte[] GetPemBytes(string pem, string section)
+    {
+        var header = $"-----BEGIN {section}-----";
+        var footer = $"-----END {section}-----";
+
+        var start = pem.IndexOf(header, StringComparison.Ordinal) + header.Length;
+        var end = pem.IndexOf(footer, start, StringComparison.Ordinal);
+
+        var base64 = pem.Substring(start, end - start);
+        return Convert.FromBase64String(base64);
+    }
+   
+    /// <summary>
+    /// Retorna a porta Https configurada na variavel de ambiente, ou 443 se nao existir uma variavel com a configuração da porta
+    /// </summary>
+    /// <param name="_">extensão para <see  cref="HttpsRedirectionOptions"/></param>
+    /// <returns>Porta https</returns>
+    public static int GetHttpsPort(this HttpsRedirectionOptions _)
+    {
+        return int.TryParse(Environment.GetEnvironmentVariable("ASPNETCORE_HTTP_PORTS"), out int port) ? port : 443;
     }
 }

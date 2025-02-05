@@ -6,14 +6,10 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer; 
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder
     .AddBasicBearerAuth()
+    .AddSelfSignedCertificate(builder.Configuration)
     .AddApplication(builder.Configuration)
-    .AddOutputCache(options =>
-    {
-        options.AddBasePolicy(policy => policy.Expire(TimeSpan.FromMinutes(10)));
-    })
     .AddControllers()
     .Services
     .AddEndpointsApiExplorer()
