@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace MReminders.API.Infrastructure.Services;
 
-public class ReminderService(IRepository<Reminder> reminderRepository, IRepository<Attachment> attachmentsRepository, ILogger<ReminderService> logger) : IReminderService
+internal class ReminderService(IRepository<Reminder> reminderRepository, IRepository<Attachment> attachmentsRepository, ILogger<ReminderService> logger) : IReminderService
 {
     public async Task<Attachment> AddAttachment(Attachment attachment)
     {

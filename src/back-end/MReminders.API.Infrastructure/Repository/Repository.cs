@@ -67,7 +67,7 @@ public class Repository<T>(AppDbContext context, ILogger<Repository<T>> logger) 
     {
         try
         {
-            IQueryable<T> query = context.Set<T>();
+            IQueryable<T> query = context.Set<T>().AsNoTracking();
 
             foreach (var include in includes)
             {
@@ -86,7 +86,7 @@ public class Repository<T>(AppDbContext context, ILogger<Repository<T>> logger) 
     {
         try
         {
-            return context.Set<T>().Where(expression).FirstOrDefault() ?? default!;
+            return context.Set<T>().AsNoTracking().Where(expression).FirstOrDefault() ?? default!;
         }
         catch (Exception e)
         {

@@ -20,7 +20,9 @@ public static class DependencyInjection
     {
         services.AddDbContext<AppDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), dbOptions =>
+            //var isRunningInContainer = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+
+            options.UseSqlServer(configuration.GetConnectionString("DockerConnection"), dbOptions =>
             {
                 dbOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
                 dbOptions.EnableRetryOnFailure();
