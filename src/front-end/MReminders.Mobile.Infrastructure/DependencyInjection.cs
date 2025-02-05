@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using MReminders.Mobile.Domain.Entities;
 using MReminders.Mobile.Infrastructure.Data;
+using MReminders.Mobile.Infrastructure.Interfaces;
+using MReminders.Mobile.Infrastructure.Repositories;
+using MReminders.Mobile.Infrastructure.Services;
+using MReminders.Mobile.Infrastructure.Storages;
 using System.Text;
 
 namespace MReminders.Mobile.Infrastructure;
@@ -11,6 +13,29 @@ namespace MReminders.Mobile.Infrastructure;
 public static class DependencyInjection
 {
     public static MauiAppBuilder AddInfrastructure(this MauiAppBuilder builder)
+    {
+        builder.AddStorages();
+        builder.AddDbContext();
+        builder.AddRepositories();
+        builder.AddServices();
+
+        return builder;
+    }
+
+    private static MauiAppBuilder AddStorages(this MauiAppBuilder builder)
+    {
+        builder.Services.AddSingleton(typeof(IProtectedStorage<>), typeof(ProtectedStorage<>));
+        builder.Services.AddSingleton<ITokenStorage, TokenStorage>();
+        return builder;
+    }
+
+    private static MauiAppBuilder AddRepositories(this MauiAppBuilder builder)
+    {
+        builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+        return builder;
+    }
+
+    private static MauiAppBuilder AddDbContext(this MauiAppBuilder builder)
     {
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
@@ -21,36 +46,19 @@ public static class DependencyInjection
                 sqlite.MigrationsAssembly(typeof(DependencyInjection).Assembly);
             });
         });
+        return builder;
+    }
 
-        builder.Services.AddIdentity<AppUser, AppRole>()
-                 .AddEntityFrameworkStores<AppDbContext>()
-                 .AddDefaultTokenProviders();
-        builder.Services.ConfigureApplicationCookie(options =>
-        {
-            options.LoginPath = $"/Account.Login";
-            options.LogoutPath = $"/Account.Logout";
-            options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
-        });
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1d15f327a58d4a39887de5149dae09c3")),
-                ClockSkew = TimeSpan.FromHours(2)
-            };
-        });
-        builder.Services.AddTransient<SignInManager<AppUser>>();
-        builder.Services.AddTransient<UserManager<AppUser>>();
 
+
+    private static MauiAppBuilder AddServices(this MauiAppBuilder builder)
+    {
+        builder.Services.AddScoped<UserManager<AppUser>>();
+        builder.Services.AddScoped<IBiometricsService, BiometricsService>();
+        builder.Services.AddScoped<IIdentityService, IdentityService>();
+        builder.Services.AddScoped<IPermissionsService, PermissionsService>();
+        builder.Services.AddScoped<ITokenRenewalService, TokenRenewalService>();
+        builder.Services.AddScoped<IRemindersService, ReminderService>();
         return builder;
     }
 }

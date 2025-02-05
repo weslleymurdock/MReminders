@@ -1,12 +1,13 @@
 ﻿using MReminders.Mobile.Domain.Entities;
+using MReminders.Rest.Client;
+using System.Linq.Expressions;
 
 namespace MReminders.Mobile.Infrastructure.Interfaces;
 
 public interface IIdentityService
 {
-    Task<bool> SignInAsync(string username, string password);
-    Task<bool> Register(AppUser appUser);
-    Task<bool> ResetPassword(AppUser appUser);
-
-    Task<bool> SetBiometrics(string userId, BiometricData)
+    Task<UserResponseBaseResponse> Register(AppUser appUser, string password, string[] roles); 
+    Task SetBearer(string bearer);
+    Task<UserResponse> GetProfile(string key);
+    Task<BooleanBaseResponse> UpdateProfile(EditAccountProfileRequest request);
 }

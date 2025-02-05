@@ -4,9 +4,9 @@ namespace MReminders.Mobile.Infrastructure.Interfaces;
 
 public interface IRepository <T> where T : class
 {
-    Task<bool> AddAsync(T entity);
+    Task<(bool, T)> AddAsync(T entity);
     Task<bool> DeleteAsync(T entity);
-    Task<IEnumerable<T>> Get(Expression<Func<T, bool>> filter);
-    Task<IEnumerable<T>> Get(Expression<Func<T, bool>> filter, Expression<Func<T, object>> includes);
-    Task<bool> UpdateAsync(T entity);
+    Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter);
+    Task<IEnumerable<T>> GetAsync<U>(Expression<Func<T, bool>> filter, Expression<Func<T, U>> includes);
+    Task<(bool, T)> UpdateAsync(T entity);
 }
