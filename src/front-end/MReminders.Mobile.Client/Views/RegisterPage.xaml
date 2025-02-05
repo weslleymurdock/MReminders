@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MReminders.Mobile.Client.Views.RegisterPage"
-             Title="RegisterPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="MReminders.Mobile.Client.Views.RegisterPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:vm="clr-namespace:MReminders.Mobile.Client.ViewModels"
+    Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <vm:RegisterViewModel />
+    </ContentPage.BindingContext>
+    <Grid RowDefinitions="*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*">
+
+        <material:TextField
+            Title="Digite seu Nome"
+            Grid.Row="1"
+            Text="{Binding Name}" />
+        <material:TextField
+            Title="Digite o nome de usuário"
+            Grid.Row="3"
+            Text="{Binding Username}" />
+        <material:TextField
+            Title="Digite o seu email"
+            Grid.Row="5"
+            Text="{Binding Email}" />
+        <material:TextField
+            Title="Digite o seu telefone (com código de país)"
+            Grid.Row="7"
+            Text="{Binding PhoneNumber}" />
+        <material:TextField
+            Title="Digite sua senha"
+            Grid.Row="9"
+            IsPassword="True"
+            Text="{Binding Password}" />
+        <material:TextField
+            Title="Digite a senha novamente"
+            Grid.Row="11"
+            IsPassword="True"
+            Text="{Binding ConfirmationPassword}" />
+        <Button
+            Grid.Row="13"
+            Command="{Binding RegisterCommand}"
+            Text="Cadastrar usuario" />
+    </Grid>
 </ContentPage>

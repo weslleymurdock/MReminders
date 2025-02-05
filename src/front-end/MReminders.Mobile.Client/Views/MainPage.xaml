@@ -2,34 +2,161 @@
 <ContentPage
     x:Class="MReminders.Mobile.Client.Views.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fa="clr-namespace:UraniumUI.Icons.FontAwesome;assembly=UraniumUI.Icons.FontAwesome"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:MReminders.Mobile.Client.ViewModels"
+    x:Name="PageMain">
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
+    </Shell.BackButtonBehavior>
+    <Shell.TitleView>
+        <HorizontalStackLayout HorizontalOptions="StartAndExpand" VerticalOptions="Fill">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="25">
-            <Image
-                Aspect="AspectFit"
-                HeightRequest="185"
-                SemanticProperties.Description="dot net bot in a race car number eight"
-                Source="dotnet_bot.png" />
-
+            <ImageButton
+                Margin="5,5,80,5"
+                Command="{Binding AddReminderCommand}"
+                HorizontalOptions="StartAndExpand"
+                IsVisible="True">
+                <ImageButton.Source>
+                    <FontImageSource
+                        FontFamily="FASolid"
+                        Glyph="{x:Static fa:Solid.Plus}"
+                        Color="{StaticResource PrimaryColorLight}" />
+                </ImageButton.Source>
+            </ImageButton>
             <Label
-                SemanticProperties.HeadingLevel="Level1"
-                Style="{StaticResource Headline}"
-                Text="Hello, World!" />
+                BackgroundColor="Transparent"
+                FontAttributes="Bold"
+                FontSize="Medium"
+                HeightRequest="24"
+                HorizontalOptions="CenterAndExpand"
+                Text="{Binding Title}"
+                TextColor="White" />
+            <ImageButton
+                Margin="140,5,5,5"
+                Command="{Binding ViewProfileCommand}"
+                HorizontalOptions="End"
+                IsVisible="True">
+                <ImageButton.Source>
+                    <FontImageSource
+                        FontFamily="FASolid"
+                        Glyph="{x:Static fa:Solid.User}"
+                        Color="{StaticResource PrimaryColorLight}" />
+                </ImageButton.Source>
+            </ImageButton>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+    <RefreshView Command="{Binding RefreshRemindersCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <ScrollView>
+            <Grid
+                Padding="10"
+                ColumnSpacing="10"
+                RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <Label
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                SemanticProperties.HeadingLevel="Level2"
-                Style="{StaticResource SubHeadline}"
-                Text="Welcome to &#10;.NET Multi-platform App UI" />
+                <Label
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    FontSize="Large"
+                    HorizontalOptions="Center"
+                    Text="Lembretes" />
 
-            <Button
-                x:Name="CounterBtn"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Fill"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Text="Click me" />
-        </VerticalStackLayout>
-    </ScrollView>
+                <material:DatePickerField
+                    Title="Filtrar por data"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    AllowClear="True"
+                    Date="{Binding ReminderDateFilter}"
+                    MinimumDate="{Binding MinimumDateFilter}" />
 
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Command="{Binding FilterByDateCommand}"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Text="Filtrar" />
+
+                <material:TextField
+                    Title="Filtrar por nome ou descrição"
+                    Grid.Row="2"
+                    Text="{Binding ReminderFilter}">
+                    <material:TextField.Behaviors>
+                        <toolkit:EventToCommandBehavior Command="{Binding TextHasChangedCommand}" EventName="TextChanged" />
+                    </material:TextField.Behaviors>
+                </material:TextField>
+
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Command="{Binding RemoveFiltersCommand}"
+                    HorizontalOptions="End"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Text="Limpar filtros" />
+
+                <CollectionView
+                    Grid.Row="4"
+                    Grid.ColumnSpan="2"
+                    ItemsSource="{Binding FilteredReminders}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem
+                                            BackgroundColor="Yellow"
+                                            Command="{Binding BindingContext.EditSelectedReminderCommand, Source={x:Reference PageMain}}"
+                                            CommandParameter="{Binding .}"
+                                            Text="Editar" />
+                                        <SwipeItem
+                                            BackgroundColor="Red"
+                                            Command="{Binding BindingContext.DeleteSelectedReminderCommand, Source={x:Reference PageMain}}"
+                                            CommandParameter="{Binding .}"
+                                            Text="Excluir" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <SwipeView.LeftItems>
+                                    <SwipeItems>
+                                        <SwipeItem
+                                            BackgroundColor="CornflowerBlue"
+                                            Command="{Binding BindingContext.AddReminderAttachmentCommand, Source={x:Reference PageMain}}"
+                                            CommandParameter="{Binding .}"
+                                            Text="Anexar documento" />
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <Grid Padding="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label
+                                        HorizontalOptions="Start"
+                                        Text="{Binding ReminderName}"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Column="1"
+                                        HorizontalOptions="End"
+                                        Text="{Binding ReminderDate, StringFormat='{dd/MM/yyyy 0:HH:mm}'}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </ScrollView>
+    </RefreshView>
 </ContentPage>

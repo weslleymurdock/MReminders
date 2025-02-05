@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MReminders.Mobile.Client.Views.ProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:vm="clr-namespace:MReminders.Mobile.Client.ViewModels"
+    Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <vm:ProfileViewModel />
+    </ContentPage.BindingContext>
+    <ScrollView Orientation="Vertical">
+        <Grid RowDefinitions="*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*">
+
+            <material:TextField
+                Title="Digite seu Nome"
+                Grid.Row="1"
+                Text="{Binding Name}" />
+            <material:TextField
+                Title="Digite o seu email"
+                Grid.Row="3"
+                Text="{Binding Email}" />
+            <material:TextField
+                Title="Digite o seu telefone (com código de país)"
+                Grid.Row="5"
+                Text="{Binding Phone}" />
+            <material:TextField
+                Title="Digite sua senha antiga "
+                Grid.Row="7"
+                Text="{Binding OldPassword}" />
+            <material:TextField
+                Title="Digite a nova senha novamente"
+                Grid.Row="9"
+                Text="{Binding NewPassword}" />
+            <material:TextField
+                Title="Digite a nova senha novamente"
+                Grid.Row="11"
+                Text="{Binding ConfirmationNewPassword}" />
+            <Button
+                Grid.Row="13"
+                Command="{Binding EditProfileCommand}"
+                Text="Atualizar perfil" />
+        </Grid>
+    </ScrollView>
+</ContentPage>

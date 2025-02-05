@@ -28,5 +28,10 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+  <key>NSFaceIDUsageDescription</key>
+  <string>We use Face ID for biometric authentication to secure your data</string>
+  <key>NSLocalAuthUsageDescription</key>
+  <string>We use Touch ID for biometric authentication to secure your data</string>
+
 </dict>
 </plist>

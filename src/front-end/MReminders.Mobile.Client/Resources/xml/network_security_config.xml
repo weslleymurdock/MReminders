@@ -1,0 +1,8 @@
+﻿<network-security-config>
+  <domain-config>
+    <domain includeSubdomains="true">192.168.15.15</domain>
+    <trust-anchors>
+      <certificates src="@raw/cert" />
+    </trust-anchors>
+  </domain-config>
+</network-security-config>

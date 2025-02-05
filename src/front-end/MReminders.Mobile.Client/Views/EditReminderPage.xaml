@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MReminders.Mobile.Client.Views.EditReminderPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:vm="clr-namespace:MReminders.Mobile.Client.ViewModels"
+    Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <vm:EditReminderViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*,*, 0.7*">
+        <material:DatePickerField
+            Title="Selecione uma Data"
+            Grid.Row="1"
+            Date="{Binding Date, Mode=TwoWay}" />
+        <material:TimePickerField
+            Title="Escolha um horario"
+            Grid.Row="3"
+            Time="{Binding Time, Mode=TwoWay}" />
+        <material:TextField
+            Title="Digite o Titulo do lembrete"
+            Grid.Row="5"
+            Text="{Binding ReminderTitle, Mode=TwoWay}" />
+        <material:TextField
+            Title="Digite a descrição do lembrete"
+            Grid.Row="7"
+            Text="{Binding Description, Mode=TwoWay}" />
+        <material:TextField
+            Title="Digite o Local do lembrete"
+            Grid.Row="9"
+            Text="{Binding Location, Mode=TwoWay}" />
+        <Button
+            Grid.Row="11"
+            Command="{Binding EditReminderCommand}"
+            Text="Atualizar lembrete" />
+    </Grid>
+</ContentPage>

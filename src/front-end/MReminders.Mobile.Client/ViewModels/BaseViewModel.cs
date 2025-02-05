@@ -1,48 +1,82 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using MReminders.Mobile.Client.Views;
-using MReminders.Mobile.Infrastructure.Attributes;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using MediatR;
+using Microsoft.Extensions.Configuration;
 using MReminders.Mobile.Infrastructure.Interfaces;
-using System.IdentityModel.Tokens.Jwt;
+using MReminders.Rest.Client;
+using System.Collections.ObjectModel;
 
 namespace MReminders.Mobile.Client.ViewModels;
 
 public partial class BaseViewModel : ObservableObject
 {
-    #region readonly services
-    private readonly JwtSecurityTokenHandler handler = new();
-    private readonly ITokenService _tokenService;
+    #region Services 
+    protected IMediator mediator;
+    protected IIdentityService identity;
+    protected IPermissionsService permissions;
+    protected IBiometricsService biometrics;
+    protected ITokenStorage tokenStorage; 
+    protected ITokenRenewalService tokenRenewal;
+    protected IConfiguration configuration;
+    protected IProtectedStorage<string> stringStorage;
+    protected IRemindersService remindersService;
     #endregion
 
     #region Observable Properties
     [ObservableProperty]
     private string title = string.Empty;
+    [ObservableProperty]
+    private ObservableCollection<ReminderResponse> reminders = [];
+    [ObservableProperty]
+    private ObservableCollection<DateTime> reminderDates = [];
+
+    [ObservableProperty]
+    private ObservableCollection<DateTime> daysInMonth = [];
     #endregion
 
-    #region Fields
-    private bool _isAuthenticated;
+    #region Protected Properties
+    protected Shell Shell { get => Shell.Current; }
+    protected IServiceProvider Services { get => Shell.Handler!.MauiContext!.Services; }
+    protected INavigation Navigator { get => this.CurrentPage.Navigation; }
+    protected Page CurrentPage { get => Shell.CurrentPage; }
+    protected Microsoft.Maui.Controls.Application CurrentApplication { get => Microsoft.Maui.Controls.Application.Current!; }
     #endregion
-    
+
     public BaseViewModel()
     {
-        var type = this.GetType();
-
-        if (Attribute.GetCustomAttribute(type, typeof(AuthorizeAttribute)) is not AuthorizeAttribute attribute || !attribute.RequiresAuthentication)
-        {
-            return;
-        }
-        ValidateToken().ConfigureAwait(false);
+        mediator = Services.GetRequiredService<IMediator>();
+        identity = Services.GetRequiredService<IIdentityService>();
+        biometrics = Services.GetRequiredService<IBiometricsService>();
+        permissions = Services.GetRequiredService<IPermissionsService>(); 
+        tokenRenewal = Services.GetRequiredService<ITokenRenewalService>();
+        tokenStorage = Services.GetRequiredService<ITokenStorage>();
+        configuration = Services.GetRequiredService<IConfiguration>();
+        stringStorage = Services.GetRequiredService<IProtectedStorage<string>>();
+        remindersService = Services.GetRequiredService<IRemindersService>();
     }
 
-    private async Task ValidateToken()
+    protected async Task LoadReminders(CancellationToken token = default)
     {
-        var token = await SecureStorage.GetAsync("jwt-token");
-        if (string.IsNullOrEmpty(token) || IsTokenExpired(token))
+        var userKey = await stringStorage.GetAsync(stringStorage.UserKey);
+        Reminders = (await remindersService.GetRemindersFromUserAsync(userKey, token)).Data.ToObservableCollection();
+
+        foreach (var reminder in Reminders)
         {
-            Microsoft.Maui.Controls.Application.Current!.MainPage = new LoginPage();
+            ReminderDates.Add(reminder.ReminderDate);
         }
+
+        LoadCalendar();
     }
-    private bool IsTokenExpired(string token)
+    private void LoadCalendar()
     {
-        return handler.ReadToken(token) is not JwtSecurityToken jwtToken || jwtToken.ValidTo <= DateTime.UtcNow;
+        DaysInMonth.Clear();
+        var daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+
+        for (int day = 1; day <= daysInMonth; day++)
+        {
+            var currentDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, day);
+            DaysInMonth.Add(currentDay);
+        }
     }
 }
